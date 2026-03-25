@@ -6,6 +6,7 @@ from typing import Any, Dict, List
 CONFIG_ROOT = Path(__file__).resolve().parents[2] / "configs"
 LEGACY_MAPPING_PATH = CONFIG_ROOT / "bom_mapping.json"
 BOM_PROFILES_DIR = CONFIG_ROOT / "bom_profiles"
+VALUE_NORMALIZATION_PATH = CONFIG_ROOT / "value_normalization.json"
 FALLBACK_PROFILES = {
     "json": "generic_json",
     "csv": "generic_csv",
@@ -46,4 +47,11 @@ def load_bom_mapping_config(config_path: str = "") -> Dict[str, Any]:
     """Backward-compatible loader for the legacy single mapping file."""
 
     resolved_path = Path(config_path) if config_path else LEGACY_MAPPING_PATH
+    return json.loads(resolved_path.read_text(encoding="utf-8"))
+
+
+def load_value_normalization_config(config_path: str = "") -> Dict[str, Any]:
+    """Load the shared value normalization rules used by BOM adaptation."""
+
+    resolved_path = Path(config_path) if config_path else VALUE_NORMALIZATION_PATH
     return json.loads(resolved_path.read_text(encoding="utf-8"))

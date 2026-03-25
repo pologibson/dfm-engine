@@ -1,0 +1,81 @@
+{
+  "null_like_values": [
+    "",
+    "-",
+    "--",
+    "n/a",
+    "na",
+    "none",
+    "null",
+    "nil",
+    "tbd",
+    "pending",
+    "/"
+  ],
+  "uom": {
+    "aliases": {
+      "PCS": ["pcs", "pc", "piece", "pieces", "件", "个"],
+      "SET": ["set", "sets", "套"],
+      "EA": ["ea", "each"],
+      "M": ["m", "meter", "meters", "米"]
+    },
+    "default": "EA",
+    "unknown_strategy": "uppercase"
+  },
+  "supplier": {
+    "aliases": {
+      "Yaskawa": ["yaskawa", "安川"],
+      "HIWIN": ["hiwin", "上银"],
+      "Siemens": ["siemens", "西门子"],
+      "Camfil": ["camfil"],
+      "In-house": ["in house", "in-house", "internal", "自制"]
+    },
+    "default": "Unknown Supplier",
+    "unknown_strategy": "preserve"
+  },
+  "category": {
+    "aliases": {
+      "motion": ["motion", "传动", "axis", "drive"],
+      "electrical": ["electrical", "electric", "ele", "控制电气"],
+      "tooling": ["tooling", "tool", "fixture", "工装"],
+      "safety": ["safety", "guarding", "防护"],
+      "maintenance": ["maintenance", "spare", "service", "维护"],
+      "structural": ["structure", "structural", "frame", "焊接结构"],
+      "standard": ["standard", "std", "通用"]
+    },
+    "default": "standard",
+    "unknown_strategy": "lower"
+  },
+  "revision": {
+    "default": "N/A",
+    "strip_prefixes": ["rev", "revision", "版本"],
+    "uppercase": true
+  },
+  "boolean_flags": {
+    "true_values": ["1", "true", "yes", "y", "是", "spare", "consumable"],
+    "false_values": ["0", "false", "no", "n", "否", "none", ""]
+  },
+  "lead_time": {
+    "default_days": 14,
+    "exact_aliases": {
+      "4 weeks": 28,
+      "28d": 28,
+      "28 days": 28,
+      "6 weeks": 42,
+      "1 month": 30
+    },
+    "unit_days": {
+      "d": 1,
+      "day": 1,
+      "days": 1,
+      "wk": 7,
+      "wks": 7,
+      "week": 7,
+      "weeks": 7,
+      "mo": 30,
+      "mos": 30,
+      "month": 30,
+      "months": 30
+    }
+  }
+}

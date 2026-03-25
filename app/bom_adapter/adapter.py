@@ -1,11 +1,11 @@
 import csv
 import io
 import json
-import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
-from app.bom_adapter.config import get_bom_profile_path
+from app.bom_adapter.config import VALUE_NORMALIZATION_PATH, get_bom_profile_path
+from app.bom_adapter.normalizer import normalize_mapped_values
 from app.bom_adapter.profiles import normalize_header, resolve_bom_profile
 from app.models.schemas import BOMAdaptationResult, NormalizedBOMPart
 
@@ -59,33 +59,6 @@ def _parse_int(value: Any, default: int) -> int:
         return int(float(str(value).strip()))
     except (TypeError, ValueError):
         return default
-
-
-def _parse_lead_time_days(value: Any, default: int) -> int:
-    if value is None or str(value).strip() == "":
-        return default
-
-    text = str(value).strip().lower()
-    number_match = re.search(r"(\d+(?:\.\d+)?)", text)
-    if not number_match:
-        return default
-
-    numeric_value = float(number_match.group(1))
-    if any(token in text for token in ("week", "weeks", "wk", "wks")):
-        return max(1, int(round(numeric_value * 7)))
-    return max(1, int(round(numeric_value)))
-
-
-def _parse_bool(value: Any, default: bool = False) -> bool:
-    if value is None:
-        return default
-
-    normalized = str(value).strip().lower()
-    if normalized in ("1", "true", "yes", "y", "spare", "consumable"):
-        return True
-    if normalized in ("0", "false", "no", "n", ""):
-        return False
-    return default
 
 
 def _pick_value(
@@ -146,8 +119,33 @@ def adapt_bom_records(
     for row_index, row in enumerate(records, start=1):
         normalized_record = {normalize_header(key): value for key, value in row.items()}
 
-        part_name_value = _pick_value(normalized_record, alias_lookup, "part_name")
-        quantity_value = _pick_value(normalized_record, alias_lookup, "quantity")
+        mapped_values = {
+            "item_no": _pick_value(normalized_record, alias_lookup, "item_no"),
+            "part_name": _pick_value(normalized_record, alias_lookup, "part_name"),
+            "quantity": _pick_value(normalized_record, alias_lookup, "quantity"),
+            "uom": _pick_value(normalized_record, alias_lookup, "uom"),
+            "material": _pick_value(normalized_record, alias_lookup, "material"),
+            "process": _pick_value(normalized_record, alias_lookup, "process"),
+            "category": _pick_value(normalized_record, alias_lookup, "category"),
+            "supplier": _pick_value(normalized_record, alias_lookup, "supplier"),
+            "lead_time_days": _pick_value(normalized_record, alias_lookup, "lead_time_days"),
+            "module_hint": _pick_value(normalized_record, alias_lookup, "module_hint"),
+            "is_spare": _pick_value(normalized_record, alias_lookup, "is_spare"),
+            "is_consumable": _pick_value(normalized_record, alias_lookup, "is_consumable"),
+            "revision": _pick_value(normalized_record, alias_lookup, "revision"),
+            "drawing_no": _pick_value(normalized_record, alias_lookup, "drawing_no"),
+            "notes": _pick_value(normalized_record, alias_lookup, "notes"),
+        }
+        normalized_value_result = normalize_mapped_values(
+            mapped_values=mapped_values,
+            defaults=defaults,
+        )
+        normalized_values = normalized_value_result["values"]
+        for normalization_warning in normalized_value_result["warnings"]:
+            _append_warning(warnings, row_index, normalization_warning)
+
+        part_name_value = normalized_values["part_name"]
+        quantity_value = normalized_values["quantity"]
 
         if "part_name" in critical_fields and part_name_value in (None, ""):
             _append_blocking_error(
@@ -170,26 +168,26 @@ def adapt_bom_records(
             )
 
         part_name = str(part_name_value or "Unnamed Part {0}".format(row_index))
-        item_no = _pick_value(normalized_record, alias_lookup, "item_no")
+        item_no = normalized_values["item_no"]
         if item_no in (None, ""):
             item_no = "AUTO-{0:03d}".format(row_index)
             _append_warning(warnings, row_index, "missing item number, defaulted to '{0}'.".format(item_no))
 
-        if _pick_value(normalized_record, alias_lookup, "supplier") in (None, ""):
+        if mapped_values["supplier"] in (None, ""):
             _append_warning(
                 warnings,
                 row_index,
                 "missing vendor/supplier, defaulted to '{0}'.".format(defaults["supplier"]),
             )
 
-        if _pick_value(normalized_record, alias_lookup, "lead_time_days") in (None, ""):
+        if mapped_values["lead_time_days"] in (None, ""):
             _append_warning(
                 warnings,
                 row_index,
                 "missing lead_time/lt/leadtime, defaulted to {0} days.".format(defaults["lead_time_days"]),
             )
 
-        if _pick_value(normalized_record, alias_lookup, "category") in (None, ""):
+        if mapped_values["category"] in (None, ""):
             _append_warning(
                 warnings,
                 row_index,
@@ -200,29 +198,22 @@ def adapt_bom_records(
             item_no=str(item_no),
             part_name=part_name,
             quantity=_parse_int(quantity_value, defaults["quantity"]),
-            uom=str(_pick_value(normalized_record, alias_lookup, "uom") or defaults["uom"]),
-            material=str(_pick_value(normalized_record, alias_lookup, "material") or defaults["material"]),
-            process=str(_pick_value(normalized_record, alias_lookup, "process") or defaults["process"]),
-            category=str(_pick_value(normalized_record, alias_lookup, "category") or defaults["category"]),
-            supplier=str(_pick_value(normalized_record, alias_lookup, "supplier") or defaults["supplier"]),
-            lead_time_days=_parse_lead_time_days(
-                _pick_value(normalized_record, alias_lookup, "lead_time_days"),
-                defaults["lead_time_days"],
-            ),
-            module_hint=_pick_value(normalized_record, alias_lookup, "module_hint") or defaults["module_hint"],
-            is_spare=_parse_bool(
-                _pick_value(normalized_record, alias_lookup, "is_spare"),
-                defaults["is_spare"],
-            ),
-            is_consumable=_parse_bool(
-                _pick_value(normalized_record, alias_lookup, "is_consumable"),
-                defaults["is_consumable"],
-            ),
-            revision=str(_pick_value(normalized_record, alias_lookup, "revision") or defaults["revision"]),
-            drawing_no=str(_pick_value(normalized_record, alias_lookup, "drawing_no") or defaults["drawing_no"]),
-            notes=str(_pick_value(normalized_record, alias_lookup, "notes") or defaults["notes"]),
+            uom=str(normalized_values["uom"] or defaults["uom"]),
+            material=str(normalized_values["material"] or defaults["material"]),
+            process=str(normalized_values["process"] or defaults["process"]),
+            category=str(normalized_values["category"] or defaults["category"]),
+            supplier=str(normalized_values["supplier"] or defaults["supplier"]),
+            lead_time_days=int(normalized_values["lead_time_days"]),
+            module_hint=normalized_values["module_hint"] or defaults["module_hint"],
+            is_spare=bool(normalized_values["is_spare"]),
+            is_consumable=bool(normalized_values["is_consumable"]),
+            revision=str(normalized_values["revision"] or defaults["revision"]),
+            drawing_no=str(normalized_values["drawing_no"] or defaults["drawing_no"]),
+            notes=str(normalized_values["notes"] or defaults["notes"]),
             source_row=row_index,
             source_fields=row,
+            raw_values=normalized_value_result["raw_values"],
+            normalization_trace=normalized_value_result["trace"],
         )
         normalized_parts.append(normalized_part)
 
@@ -235,6 +226,7 @@ def adapt_bom_records(
         detection_matched=profile_resolution["detection_matched"],
         candidate_profile_scores=profile_resolution["candidate_scores"],
         mapping_path=str(get_bom_profile_path(profile_resolution["selected_profile"]).resolve()),
+        normalization_config_path=str(VALUE_NORMALIZATION_PATH.resolve()),
         normalized_parts=normalized_parts,
         warnings=warnings,
         blocking_errors=blocking_errors,

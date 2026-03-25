@@ -75,6 +75,7 @@ def _build_report_data(
             "bom_source_name": adaptation_result.source_name,
             "bom_source_format": adaptation_result.source_format,
             "bom_mapping_path": adaptation_result.mapping_path,
+            "value_normalization_path": adaptation_result.normalization_config_path,
             "cad_parser": parser_type,
             "cad_parser_contract": parser.get_contract().model_dump(),
             "profile_detection_matched": adaptation_result.detection_matched,
@@ -132,7 +133,7 @@ def _run_generation_from_adaptation(
         )
 
     bom_items = [
-        BOMItem(**part.model_dump(exclude={"source_row", "source_fields"}))
+        BOMItem(**part.model_dump(exclude={"source_row", "source_fields", "raw_values", "normalization_trace"}))
         for part in adaptation_result.normalized_parts
     ]
     cad_model = parse_step_file(

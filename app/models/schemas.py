@@ -24,6 +24,8 @@ class BOMItem(BaseModel):
 class NormalizedBOMPart(BOMItem):
     source_row: int
     source_fields: Dict[str, Any] = Field(default_factory=dict)
+    raw_values: Dict[str, Any] = Field(default_factory=dict)
+    normalization_trace: Dict[str, str] = Field(default_factory=dict)
 
 
 class BOMAdaptationResult(BaseModel):
@@ -35,6 +37,7 @@ class BOMAdaptationResult(BaseModel):
     detection_matched: bool = False
     candidate_profile_scores: List[Dict[str, Any]] = Field(default_factory=list)
     mapping_path: str
+    normalization_config_path: str = ""
     normalized_parts: List[NormalizedBOMPart] = Field(default_factory=list)
     warnings: List[str] = Field(default_factory=list)
     blocking_errors: List[str] = Field(default_factory=list)
