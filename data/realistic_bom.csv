@@ -1,0 +1,9 @@
+Line No,Item Description,Qty,Unit,Material Spec,Process Route,Commodity_Group,Vendor,LT,Module,DWG No,Rev,Remarks
+0010,Base Weldment Assy,1,SET,Q235B + stress relief,Weldment + machining,STRUCTURE,Suzhou Precision Fab,4 weeks,motion,AETH-FRM-001,B,Critical datum for gantry alignment
+0020,Linear Rail HGW35,4,PCS,Alloy steel,Purchased part,MOTION,HIWIN CN,21,motion,STD-HGW35,STD,
+0030,Servo Motor 1.5kW,2,PCS,,Purchased part,MOTION,Yaskawa Distributor,35 days,motion,ELE-MOT-015,A,
+0040,Dispense Nozzle Assembly,1,SET,SUS304,Machining + assembly,TOOLING,In-house,12,process,TOOL-NZL-002,C,
+0050,PLC Main Rack,1,PCS,,Purchased part,ELECTRICAL,Siemens Channel,6 weeks,control,ELE-PLC-001,A,
+0060,Cable Chain 45x100,2,PCS,,Purchased part,ELECTRICAL,,14,control,ELE-CCH-001,A,Supplier TBD during concept phase
+0070,Safety Guard Sheet Metal,1,SET,SECC + powder coating,Sheet metal,SAFETY,Kunshan Sheet Metal,25,safety,SAFE-GRD-001,A,
+0080,HEPA Filter Element,4,PCS,,Purchased part,MAINTENANCE,Camfil Distributor,7,process,UTIL-FLT-001,STD,

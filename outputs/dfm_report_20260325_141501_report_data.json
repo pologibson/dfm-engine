@@ -1,0 +1,566 @@
+{
+  "generated_at": "2026-03-25T14:15:01",
+  "source": {
+    "step_filename": "mock_model.step",
+    "bom_source_name": "mock_bom.json",
+    "bom_source_format": "json",
+    "bom_mapping_path": "/Users/zhangyiming/Desktop/Aether/configs/bom_mapping.json",
+    "cad_parser": "mock",
+    "cad_parser_contract": {
+      "parser_name": "mock",
+      "accepted_input": [
+        ".step filename",
+        "optional step bytes"
+      ],
+      "output_model": "CADModel",
+      "required_output_fields": [
+        "source_file",
+        "product_name",
+        "assembly_name",
+        "parts"
+      ],
+      "required_part_fields": [
+        "part_no",
+        "part_name",
+        "level",
+        "parent_part_no",
+        "module_hint",
+        "notes"
+      ],
+      "notes": "Does not read real geometry. Returns a stable demo assembly tree."
+    }
+  },
+  "warnings": [],
+  "parts": [
+    {
+      "item_no": "10",
+      "part_name": "Base Frame",
+      "quantity": 1,
+      "uom": "EA",
+      "material": "Steel",
+      "process": "Weldment",
+      "category": "structural",
+      "supplier": "Mock Fabrication",
+      "lead_time_days": 20,
+      "module_hint": "motion",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 1,
+      "source_fields": {
+        "item_no": "10",
+        "part_name": "Base Frame",
+        "quantity": 1,
+        "material": "Steel",
+        "process": "Weldment",
+        "category": "structural",
+        "supplier": "Mock Fabrication",
+        "lead_time_days": 20,
+        "module_hint": "motion"
+      }
+    },
+    {
+      "item_no": "20",
+      "part_name": "Linear Rail",
+      "quantity": 2,
+      "uom": "EA",
+      "material": "Alloy Steel",
+      "process": "Standard Part",
+      "category": "motion",
+      "supplier": "Mock Motion",
+      "lead_time_days": 18,
+      "module_hint": "motion",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 2,
+      "source_fields": {
+        "item_no": "20",
+        "part_name": "Linear Rail",
+        "quantity": 2,
+        "material": "Alloy Steel",
+        "process": "Standard Part",
+        "category": "motion",
+        "supplier": "Mock Motion",
+        "lead_time_days": 18,
+        "module_hint": "motion"
+      }
+    },
+    {
+      "item_no": "30",
+      "part_name": "Servo Motor",
+      "quantity": 2,
+      "uom": "EA",
+      "material": "Mixed",
+      "process": "Purchased Part",
+      "category": "motion",
+      "supplier": "Mock Servo",
+      "lead_time_days": 35,
+      "module_hint": "motion",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 3,
+      "source_fields": {
+        "item_no": "30",
+        "part_name": "Servo Motor",
+        "quantity": 2,
+        "material": "Mixed",
+        "process": "Purchased Part",
+        "category": "motion",
+        "supplier": "Mock Servo",
+        "lead_time_days": 35,
+        "module_hint": "motion"
+      }
+    },
+    {
+      "item_no": "40",
+      "part_name": "BallScrew Assembly",
+      "quantity": 2,
+      "uom": "EA",
+      "material": "Mixed",
+      "process": "Purchased Part",
+      "category": "motion",
+      "supplier": "Mock Motion",
+      "lead_time_days": 30,
+      "module_hint": "motion",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 4,
+      "source_fields": {
+        "item_no": "40",
+        "part_name": "BallScrew Assembly",
+        "quantity": 2,
+        "material": "Mixed",
+        "process": "Purchased Part",
+        "category": "motion",
+        "supplier": "Mock Motion",
+        "lead_time_days": 30,
+        "module_hint": "motion"
+      }
+    },
+    {
+      "item_no": "50",
+      "part_name": "Process Nozzle",
+      "quantity": 1,
+      "uom": "EA",
+      "material": "Stainless Steel",
+      "process": "Machining",
+      "category": "tooling",
+      "supplier": "Mock Tooling",
+      "lead_time_days": 12,
+      "module_hint": "process",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 5,
+      "source_fields": {
+        "item_no": "50",
+        "part_name": "Process Nozzle",
+        "quantity": 1,
+        "material": "Stainless Steel",
+        "process": "Machining",
+        "category": "tooling",
+        "supplier": "Mock Tooling",
+        "lead_time_days": 12,
+        "module_hint": "process"
+      }
+    },
+    {
+      "item_no": "60",
+      "part_name": "Product Fixture",
+      "quantity": 1,
+      "uom": "EA",
+      "material": "Aluminum",
+      "process": "Machining",
+      "category": "tooling",
+      "supplier": "Mock Tooling",
+      "lead_time_days": 15,
+      "module_hint": "process",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 6,
+      "source_fields": {
+        "item_no": "60",
+        "part_name": "Product Fixture",
+        "quantity": 1,
+        "material": "Aluminum",
+        "process": "Machining",
+        "category": "tooling",
+        "supplier": "Mock Tooling",
+        "lead_time_days": 15,
+        "module_hint": "process"
+      }
+    },
+    {
+      "item_no": "70",
+      "part_name": "Vision Sensor",
+      "quantity": 1,
+      "uom": "EA",
+      "material": "Mixed",
+      "process": "Purchased Part",
+      "category": "electrical",
+      "supplier": "Mock Vision",
+      "lead_time_days": 28,
+      "module_hint": "control",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 7,
+      "source_fields": {
+        "item_no": "70",
+        "part_name": "Vision Sensor",
+        "quantity": 1,
+        "material": "Mixed",
+        "process": "Purchased Part",
+        "category": "electrical",
+        "supplier": "Mock Vision",
+        "lead_time_days": 28,
+        "module_hint": "control"
+      }
+    },
+    {
+      "item_no": "80",
+      "part_name": "PLC Controller",
+      "quantity": 1,
+      "uom": "EA",
+      "material": "Mixed",
+      "process": "Purchased Part",
+      "category": "electrical",
+      "supplier": "Mock Controls",
+      "lead_time_days": 42,
+      "module_hint": "control",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 8,
+      "source_fields": {
+        "item_no": "80",
+        "part_name": "PLC Controller",
+        "quantity": 1,
+        "material": "Mixed",
+        "process": "Purchased Part",
+        "category": "electrical",
+        "supplier": "Mock Controls",
+        "lead_time_days": 42,
+        "module_hint": "control"
+      }
+    },
+    {
+      "item_no": "90",
+      "part_name": "Cable Chain",
+      "quantity": 2,
+      "uom": "EA",
+      "material": "Polymer",
+      "process": "Purchased Part",
+      "category": "electrical",
+      "supplier": "Mock Controls",
+      "lead_time_days": 14,
+      "module_hint": "control",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 9,
+      "source_fields": {
+        "item_no": "90",
+        "part_name": "Cable Chain",
+        "quantity": 2,
+        "material": "Polymer",
+        "process": "Purchased Part",
+        "category": "electrical",
+        "supplier": "Mock Controls",
+        "lead_time_days": 14,
+        "module_hint": "control"
+      }
+    },
+    {
+      "item_no": "100",
+      "part_name": "Safety Enclosure",
+      "quantity": 1,
+      "uom": "EA",
+      "material": "Sheet Metal",
+      "process": "Sheet Metal",
+      "category": "safety",
+      "supplier": "Mock Sheet Metal",
+      "lead_time_days": 25,
+      "module_hint": "safety",
+      "is_spare": false,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 10,
+      "source_fields": {
+        "item_no": "100",
+        "part_name": "Safety Enclosure",
+        "quantity": 1,
+        "material": "Sheet Metal",
+        "process": "Sheet Metal",
+        "category": "safety",
+        "supplier": "Mock Sheet Metal",
+        "lead_time_days": 25,
+        "module_hint": "safety"
+      }
+    },
+    {
+      "item_no": "110",
+      "part_name": "Timing Belt",
+      "quantity": 2,
+      "uom": "EA",
+      "material": "Rubber",
+      "process": "Purchased Part",
+      "category": "maintenance",
+      "supplier": "Mock Motion",
+      "lead_time_days": 21,
+      "module_hint": "motion",
+      "is_spare": true,
+      "is_consumable": false,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 11,
+      "source_fields": {
+        "item_no": "110",
+        "part_name": "Timing Belt",
+        "quantity": 2,
+        "material": "Rubber",
+        "process": "Purchased Part",
+        "category": "maintenance",
+        "supplier": "Mock Motion",
+        "lead_time_days": 21,
+        "module_hint": "motion",
+        "is_spare": true
+      }
+    },
+    {
+      "item_no": "120",
+      "part_name": "Air Filter",
+      "quantity": 4,
+      "uom": "EA",
+      "material": "Fiber",
+      "process": "Purchased Part",
+      "category": "maintenance",
+      "supplier": "Mock Utility",
+      "lead_time_days": 7,
+      "module_hint": "process",
+      "is_spare": false,
+      "is_consumable": true,
+      "revision": "N/A",
+      "drawing_no": "N/A",
+      "notes": "",
+      "source_row": 12,
+      "source_fields": {
+        "item_no": "120",
+        "part_name": "Air Filter",
+        "quantity": 4,
+        "material": "Fiber",
+        "process": "Purchased Part",
+        "category": "maintenance",
+        "supplier": "Mock Utility",
+        "lead_time_days": 7,
+        "module_hint": "process",
+        "is_consumable": true
+      }
+    }
+  ],
+  "cad_model": {
+    "source_file": "mock_model.step",
+    "product_name": "Mock Model",
+    "assembly_name": "Mock Model Assembly",
+    "parts": [
+      {
+        "part_no": "ASSY-001",
+        "part_name": "Main Assembly",
+        "level": 0,
+        "parent_part_no": null,
+        "module_hint": "system",
+        "notes": "Top-level assembly parsed from mock STEP input."
+      },
+      {
+        "part_no": "FRAME-001",
+        "part_name": "Base Frame",
+        "level": 1,
+        "parent_part_no": "ASSY-001",
+        "module_hint": "motion",
+        "notes": "Welded structure and mounting datum."
+      },
+      {
+        "part_no": "GANTRY-001",
+        "part_name": "Gantry Motion Axis",
+        "level": 1,
+        "parent_part_no": "ASSY-001",
+        "module_hint": "motion",
+        "notes": "Carries linear rails, servo and ballscrew."
+      },
+      {
+        "part_no": "TOOL-001",
+        "part_name": "Process Head",
+        "level": 1,
+        "parent_part_no": "ASSY-001",
+        "module_hint": "process",
+        "notes": "Tooling or dispense module."
+      },
+      {
+        "part_no": "CTRL-001",
+        "part_name": "Electrical Cabinet",
+        "level": 1,
+        "parent_part_no": "ASSY-001",
+        "module_hint": "control",
+        "notes": "PLC, IO and power distribution."
+      },
+      {
+        "part_no": "SAFE-001",
+        "part_name": "Safety Enclosure",
+        "level": 1,
+        "parent_part_no": "ASSY-001",
+        "module_hint": "safety",
+        "notes": "Guarding and interlock interfaces."
+      }
+    ]
+  },
+  "tagging": {
+    "module_map": {
+      "Motion Module": [
+        "Base Frame",
+        "Gantry Motion Axis",
+        "Base Frame",
+        "Linear Rail",
+        "Servo Motor",
+        "BallScrew Assembly",
+        "Timing Belt"
+      ],
+      "Process Module": [
+        "Process Head",
+        "Process Nozzle",
+        "Product Fixture",
+        "Air Filter"
+      ],
+      "Control Module": [
+        "Electrical Cabinet",
+        "Vision Sensor",
+        "PLC Controller",
+        "Cable Chain"
+      ],
+      "Safety Module": [
+        "Safety Enclosure",
+        "Safety Enclosure"
+      ]
+    },
+    "keyword_tags": {
+      "Main Assembly": [
+        "root_assembly",
+        "cad_mock"
+      ],
+      "Base Frame": [
+        "Motion Module",
+        "structural"
+      ],
+      "Gantry Motion Axis": [
+        "Motion Module",
+        "cad_mock"
+      ],
+      "Process Head": [
+        "Process Module",
+        "cad_mock"
+      ],
+      "Electrical Cabinet": [
+        "Control Module",
+        "cad_mock"
+      ],
+      "Safety Enclosure": [
+        "Safety Module",
+        "safety"
+      ],
+      "Linear Rail": [
+        "Motion Module",
+        "motion"
+      ],
+      "Servo Motor": [
+        "Motion Module",
+        "motion"
+      ],
+      "BallScrew Assembly": [
+        "Motion Module",
+        "motion"
+      ],
+      "Process Nozzle": [
+        "Process Module",
+        "tooling"
+      ],
+      "Product Fixture": [
+        "Process Module",
+        "tooling"
+      ],
+      "Vision Sensor": [
+        "Control Module",
+        "electrical"
+      ],
+      "PLC Controller": [
+        "Control Module",
+        "electrical"
+      ],
+      "Cable Chain": [
+        "Control Module",
+        "electrical"
+      ],
+      "Timing Belt": [
+        "Motion Module",
+        "maintenance",
+        "spare"
+      ],
+      "Air Filter": [
+        "Process Module",
+        "maintenance",
+        "consumable"
+      ]
+    },
+    "dfm_observations": [
+      "Detected 4 logical modules from CAD + BOM mock tagging.",
+      "Found 4 long lead time items that should be tracked early.",
+      "Spare parts count: 1; consumables count: 1.",
+      "Current CAD parsing is mocked, so geometry-driven manufacturability checks are placeholders."
+    ]
+  },
+  "plan_summary": {
+    "report_title": "DFM Auto-Generated Report",
+    "subtitle": "Mock Model MVP deck",
+    "slide_count": 15,
+    "slide_titles": [
+      "DFM Auto-Generated Report",
+      "Input Snapshot",
+      "DFM Workflow Overview",
+      "Product Structure Diagram",
+      "Assembly Hierarchy",
+      "Module Decomposition Overview",
+      "Motion Module Detail",
+      "Process Module Detail",
+      "Control Module Detail",
+      "BOM Summary",
+      "Spare Parts And Consumables",
+      "Long Lead Time Items",
+      "DFM Observations",
+      "Software Architecture",
+      "Next Steps"
+    ]
+  }
+}

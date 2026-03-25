@@ -1,0 +1,44 @@
+{
+  "profile_name": "erp_style_a",
+  "profile_kind": "specialized",
+  "description": "ERP export style using line number, item description, vendor and LT columns.",
+  "source_format": "any",
+  "critical_fields": ["part_name", "quantity"],
+  "field_aliases": {
+    "item_no": ["line_no", "line no", "material_number", "material number", "component_no", "component number"],
+    "part_name": ["item_description", "item description", "component_description", "component description", "material_description"],
+    "quantity": ["qty", "required_qty", "required qty", "base_qty", "usage_qty"],
+    "uom": ["unit", "uom"],
+    "material": ["material_spec", "material spec", "material_grade"],
+    "process": ["process_route", "process route", "procurement_type"],
+    "category": ["commodity_group", "commodity group", "material_group", "type"],
+    "supplier": ["vendor", "vendor_name", "approved_vendor", "supplier_name"],
+    "lead_time_days": ["lt", "lt_days", "leadtime", "planned_delivery_time", "lead time"],
+    "module_hint": ["module", "station", "cell"],
+    "is_spare": ["spare_flag", "service_part"],
+    "is_consumable": ["consumable_flag"],
+    "revision": ["rev", "rev_no", "change_level"],
+    "drawing_no": ["dwg_no", "dwg no", "drawing", "drawing_no"],
+    "notes": ["remarks", "remark", "comment"]
+  },
+  "defaults": {
+    "quantity": 1,
+    "uom": "EA",
+    "material": "N/A",
+    "process": "N/A",
+    "category": "standard",
+    "supplier": "Unknown Supplier",
+    "lead_time_days": 14,
+    "module_hint": null,
+    "is_spare": false,
+    "is_consumable": false,
+    "revision": "N/A",
+    "drawing_no": "N/A",
+    "notes": ""
+  },
+  "detection": {
+    "preferred_extensions": [".json", ".csv"],
+    "header_keywords": ["line_no", "item_description", "vendor", "lt", "commodity_group", "dwg_no", "rev"],
+    "strong_header_groups": [["line_no", "item_description", "qty"], ["vendor", "lt", "commodity_group"]]
+  }
+}

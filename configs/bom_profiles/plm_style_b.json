@@ -1,0 +1,44 @@
+{
+  "profile_name": "plm_style_b",
+  "profile_kind": "specialized",
+  "description": "PLM style BOM using find number, item name, subsystem and manufacturer columns.",
+  "source_format": "any",
+  "critical_fields": ["part_name", "quantity"],
+  "field_aliases": {
+    "item_no": ["find_no", "find number", "position_no", "position number"],
+    "part_name": ["item_name", "item name", "title", "display_name"],
+    "quantity": ["bom_qty", "bom quantity", "qty", "quantity"],
+    "uom": ["uom", "unit"],
+    "material": ["material", "material_spec"],
+    "process": ["make_buy", "make buy", "manufacturing_process"],
+    "category": ["part_type", "classification", "type"],
+    "supplier": ["approved_mfr", "manufacturer", "preferred_supplier"],
+    "lead_time_days": ["lead_time_days", "lead_time", "lead time"],
+    "module_hint": ["subsystem", "functional_group", "module"],
+    "is_spare": ["service_part", "spare_flag"],
+    "is_consumable": ["consumable_flag"],
+    "revision": ["revision", "revision_id"],
+    "drawing_no": ["drawing_number", "document_number", "dwg_no"],
+    "notes": ["notes", "release_comment", "comment"]
+  },
+  "defaults": {
+    "quantity": 1,
+    "uom": "EA",
+    "material": "N/A",
+    "process": "N/A",
+    "category": "standard",
+    "supplier": "Unknown Supplier",
+    "lead_time_days": 14,
+    "module_hint": null,
+    "is_spare": false,
+    "is_consumable": false,
+    "revision": "N/A",
+    "drawing_no": "N/A",
+    "notes": ""
+  },
+  "detection": {
+    "preferred_extensions": [".json", ".csv"],
+    "header_keywords": ["find_no", "item_name", "subsystem", "approved_mfr", "make_buy", "lead_time_days"],
+    "strong_header_groups": [["find_no", "item_name", "bom_qty"], ["approved_mfr", "subsystem", "make_buy"]]
+  }
+}

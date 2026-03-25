@@ -1,0 +1,8 @@
+ISO-10303-21;
+HEADER;
+FILE_DESCRIPTION(('Mock STEP model for DFM MVP'),'2;1');
+FILE_NAME('mock_model.step','2026-03-25T13:00:00',('Codex'),('OpenAI'),'mock','mock','mock');
+ENDSEC;
+DATA;
+ENDSEC;
+END-ISO-10303-21;

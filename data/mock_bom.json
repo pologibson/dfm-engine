@@ -1,0 +1,136 @@
+[
+  {
+    "item_no": "10",
+    "part_name": "Base Frame",
+    "quantity": 1,
+    "material": "Steel",
+    "process": "Weldment",
+    "category": "structural",
+    "supplier": "Mock Fabrication",
+    "lead_time_days": 20,
+    "module_hint": "motion"
+  },
+  {
+    "item_no": "20",
+    "part_name": "Linear Rail",
+    "quantity": 2,
+    "material": "Alloy Steel",
+    "process": "Standard Part",
+    "category": "motion",
+    "supplier": "Mock Motion",
+    "lead_time_days": 18,
+    "module_hint": "motion"
+  },
+  {
+    "item_no": "30",
+    "part_name": "Servo Motor",
+    "quantity": 2,
+    "material": "Mixed",
+    "process": "Purchased Part",
+    "category": "motion",
+    "supplier": "Mock Servo",
+    "lead_time_days": 35,
+    "module_hint": "motion"
+  },
+  {
+    "item_no": "40",
+    "part_name": "BallScrew Assembly",
+    "quantity": 2,
+    "material": "Mixed",
+    "process": "Purchased Part",
+    "category": "motion",
+    "supplier": "Mock Motion",
+    "lead_time_days": 30,
+    "module_hint": "motion"
+  },
+  {
+    "item_no": "50",
+    "part_name": "Process Nozzle",
+    "quantity": 1,
+    "material": "Stainless Steel",
+    "process": "Machining",
+    "category": "tooling",
+    "supplier": "Mock Tooling",
+    "lead_time_days": 12,
+    "module_hint": "process"
+  },
+  {
+    "item_no": "60",
+    "part_name": "Product Fixture",
+    "quantity": 1,
+    "material": "Aluminum",
+    "process": "Machining",
+    "category": "tooling",
+    "supplier": "Mock Tooling",
+    "lead_time_days": 15,
+    "module_hint": "process"
+  },
+  {
+    "item_no": "70",
+    "part_name": "Vision Sensor",
+    "quantity": 1,
+    "material": "Mixed",
+    "process": "Purchased Part",
+    "category": "electrical",
+    "supplier": "Mock Vision",
+    "lead_time_days": 28,
+    "module_hint": "control"
+  },
+  {
+    "item_no": "80",
+    "part_name": "PLC Controller",
+    "quantity": 1,
+    "material": "Mixed",
+    "process": "Purchased Part",
+    "category": "electrical",
+    "supplier": "Mock Controls",
+    "lead_time_days": 42,
+    "module_hint": "control"
+  },
+  {
+    "item_no": "90",
+    "part_name": "Cable Chain",
+    "quantity": 2,
+    "material": "Polymer",
+    "process": "Purchased Part",
+    "category": "electrical",
+    "supplier": "Mock Controls",
+    "lead_time_days": 14,
+    "module_hint": "control"
+  },
+  {
+    "item_no": "100",
+    "part_name": "Safety Enclosure",
+    "quantity": 1,
+    "material": "Sheet Metal",
+    "process": "Sheet Metal",
+    "category": "safety",
+    "supplier": "Mock Sheet Metal",
+    "lead_time_days": 25,
+    "module_hint": "safety"
+  },
+  {
+    "item_no": "110",
+    "part_name": "Timing Belt",
+    "quantity": 2,
+    "material": "Rubber",
+    "process": "Purchased Part",
+    "category": "maintenance",
+    "supplier": "Mock Motion",
+    "lead_time_days": 21,
+    "module_hint": "motion",
+    "is_spare": true
+  },
+  {
+    "item_no": "120",
+    "part_name": "Air Filter",
+    "quantity": 4,
+    "material": "Fiber",
+    "process": "Purchased Part",
+    "category": "maintenance",
+    "supplier": "Mock Utility",
+    "lead_time_days": 7,
+    "module_hint": "process",
+    "is_consumable": true
+  }
+]

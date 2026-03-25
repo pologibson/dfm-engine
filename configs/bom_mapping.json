@@ -1,0 +1,34 @@
+{
+  "field_aliases": {
+    "item_no": ["item_no", "item no", "line_no", "line no", "bom_line", "bom item", "part_no", "part number", "pn"],
+    "part_name": ["part_name", "name", "item_name", "item name", "description", "item_description", "item description", "part description", "component"],
+    "quantity": ["qty", "quantity", "q'ty", "usage_qty", "required_qty", "req_qty"],
+    "uom": ["uom", "unit", "unit_of_measure"],
+    "material": ["material", "material_spec", "material grade", "material_type"],
+    "process": ["process", "process_route", "manufacturing_process", "mfg_process", "route"],
+    "category": ["category", "type", "commodity", "commodity_group", "group"],
+    "supplier": ["supplier", "vendor", "maker", "manufacturer", "approved_vendor"],
+    "lead_time_days": ["lead_time_days", "lead_time", "lead time", "lt", "leadtime"],
+    "module_hint": ["module_hint", "module", "station", "cell", "module_name"],
+    "is_spare": ["is_spare", "spare", "spare_flag", "service_part", "spare_part"],
+    "is_consumable": ["is_consumable", "consumable", "consumable_flag"],
+    "revision": ["revision", "rev"],
+    "drawing_no": ["drawing_no", "drawing number", "dwg_no", "dwg no", "drawing"],
+    "notes": ["notes", "remark", "remarks", "comment"]
+  },
+  "defaults": {
+    "quantity": 1,
+    "uom": "EA",
+    "material": "N/A",
+    "process": "N/A",
+    "category": "standard",
+    "supplier": "Unknown Supplier",
+    "lead_time_days": 14,
+    "module_hint": null,
+    "is_spare": false,
+    "is_consumable": false,
+    "revision": "N/A",
+    "drawing_no": "N/A",
+    "notes": ""
+  }
+}
