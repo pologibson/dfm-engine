@@ -1,7 +1,3 @@
-
-`PR_TASK_TEMPLATE.md`
-
-```md
 # PR Task Template
 
 ## Goal
