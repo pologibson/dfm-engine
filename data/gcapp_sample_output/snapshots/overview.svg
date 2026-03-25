@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#f3f4f6"/>
+  <rect x="80" y="80" width="1040" height="540" rx="24" fill="#ffffff" stroke="#1f2937" stroke-width="4"/>
+  <text x="120" y="170" font-size="42" font-family="Arial, sans-serif" fill="#111827">GCAPP Sample Snapshot</text>
+  <text x="120" y="230" font-size="28" font-family="Arial, sans-serif" fill="#4b5563">Overall assembly overview</text>
+  <rect x="180" y="320" width="840" height="120" rx="18" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/>
+  <text x="520" y="392" text-anchor="middle" font-size="34" font-family="Arial, sans-serif" fill="#1d4ed8">Main Assembly</text>
+  <rect x="180" y="490" width="220" height="80" rx="14" fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
+  <rect x="490" y="490" width="220" height="80" rx="14" fill="#fef3c7" stroke="#b45309" stroke-width="3"/>
+  <rect x="800" y="490" width="220" height="80" rx="14" fill="#e0e7ff" stroke="#4338ca" stroke-width="3"/>
+  <text x="290" y="540" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" fill="#166534">Frame</text>
+  <text x="600" y="540" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" fill="#92400e">Motion</text>
+  <text x="910" y="540" text-anchor="middle" font-size="24" font-family="Arial, sans-serif" fill="#3730a3">Control</text>
+</svg>
