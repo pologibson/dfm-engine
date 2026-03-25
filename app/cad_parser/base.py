@@ -22,8 +22,9 @@ class CADParser(ABC):
       `module_hint` and `notes`
 
     Real-parser boundary:
-    - A production adapter may call an external CLI such as GCAPP
-    - The external tool may first emit a richer intermediate `ParsedModel`
+    - A production adapter may call external CLI tools such as GCAPP
+    - The external tools may first emit a lightweight model.json plus snapshots
+    - The adapter may normalize those artifacts into an intermediate `ParsedModel`
     - The adapter is responsible for validating that intermediate payload and
       translating it back into the stable `CADModel` used by the workflow
     """
@@ -43,7 +44,7 @@ class CADParser(ABC):
             "nodes",
             "snapshots",
         ],
-        external_artifacts=["model.json", "snapshots/"],
+        external_artifacts=["model.json", "snapshots/overview.png"],
         notes="Return a normalized CADModel regardless of parser backend.",
     )
 

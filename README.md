@@ -333,7 +333,7 @@ Blocking Error：
 ## 当前 mock 的部分
 
 - STEP 解析：当前默认走 `MockCADParser`
-- CAD 结构：由 mock parser 返回稳定装配树
+- GCAPP CLI：只有在显式切到 `real` parser 且配置好 CLI 路径后才会启用
 - 图片资产：由 `app/mock_assets/generator.py` 动态生成 PNG 占位图
 - DFM 判断：当前是基于关键词和 BOM 字段的轻量规则
 
@@ -343,27 +343,29 @@ Blocking Error：
 
 - [app/cad_parser/base.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/base.py)：定义 `CADParser`
 - [app/cad_parser/mock_parser.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/mock_parser.py)：当前演示用 mock 实现
-- [app/cad_parser/real_parser.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/real_parser.py)：未来真实解析器占位
+- [app/cad_parser/real_parser.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/real_parser.py)：GCAPP CLI adapter
 - [app/cad_parser/factory.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/factory.py)：根据 `parser_type` 选择实现
 - [app/cad_parser/parser.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/parser.py)：当前工作流入口 facade
 
-未来接入真实 STEP 解析时，只需要：
+当前真实解析路径不直接做 Python 几何绑定，而是走外部 CLI adapter：
 
-1. 在 `FutureRealCADParser.parse()` 中实现真实解析逻辑
-2. 保持输出仍然是 `CADModel`
-3. 通过 `parser_type="real"` 或环境变量 `DFM_CAD_PARSER=real` 切换
+1. `gcapp_cli` 负责输出 `model.json`
+2. `gcapp_snapshot_cli` 负责输出 `snapshots/overview.png`
+3. `FutureRealCADParser` 负责调用 CLI、读取输出并转换成 `CADModel`
+4. 通过 `parser_type="real"` 或环境变量 `DFM_CAD_PARSER=real` 切换
 
 这样 `tagging / planner / ppt_builder / API / CLI` 都不用改。
 
 ## 真实 STEP Parser 接入规范
 
-真实 parser 暂时还没实现，但边界已经固定：
+真实 parser 现在的主路径是 “GCAPP CLI -> adapter -> CADModel”，边界已经固定：
 
 - 抽象定义在 [app/cad_parser/base.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/base.py)
 - mock 实现在 [app/cad_parser/mock_parser.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/mock_parser.py)
-- future real parser 占位在 [app/cad_parser/real_parser.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/real_parser.py)
+- GCAPP adapter 在 [app/cad_parser/real_parser.py](/Users/zhangyiming/Desktop/Aether/app/cad_parser/real_parser.py)
+- CLI contract 文档在 [docs/gcapp_parser_contract.md](/Users/zhangyiming/Desktop/Aether/docs/gcapp_parser_contract.md)
 
-真实 parser 必须遵守下面的 contract：
+真实 parser adapter 必须遵守下面的 contract：
 
 输入：
 
@@ -396,6 +398,47 @@ Blocking Error：
 - 下级件层级清晰
 - `parent_part_no` 可以串出装配树
 - `module_hint` 尽量给出 motion / process / control / safety 这类可供下游使用的语义标签
+- 如果存在截图资产，挂到 `CADModel.snapshot_assets`
+
+只要保持这个 contract，下游模块都不需要重写。
+
+## GCAPP CLI 配置
+
+要启用真实 GCAPP 解析路径，至少需要：
+
+```bash
+export DFM_CAD_PARSER=real
+export DFM_GCAPP_CLI=/absolute/path/to/gcapp_cli
+export DFM_GCAPP_SNAPSHOT_CLI=/absolute/path/to/gcapp_snapshot_cli
+```
+
+可选配置：
+
+```bash
+export DFM_GCAPP_WORK_DIR=/absolute/path/to/gcapp_runs
+```
+
+这样 `real_parser` 会：
+
+1. 把当前 STEP 输入写到工作目录
+2. 调用 `gcapp_cli --input ... --output-dir ...`
+3. 调用 `gcapp_snapshot_cli --input ... --output-dir ...`
+4. 读取 `model.json`
+5. 把 `snapshots/overview.png` 暴露到 `CADModel.snapshot_assets["overview"]`
+
+如果你暂时没有可执行 CLI，但已经有一份预生成 GCAPP 输出目录，也可以走 fallback：
+
+```bash
+export DFM_CAD_PARSER=real
+export DFM_GCAPP_OUTPUT_DIR=/absolute/path/to/gcapp_output
+```
+
+fallback 目录至少应包含：
+
+- `model.json`
+- `snapshots/overview.png`
+
+兼容旧 sample 时，adapter 也会接受 `snapshots/overview.svg`。
 
 只要保持这个 contract，下游模块都不需要重写。
 
@@ -452,12 +495,28 @@ pip install -r requirements.txt
 ]
 ```
 
-### 4. `Real STEP parsing is not implemented yet`
+### 4. `GCAPP model CLI is unavailable`
 
-说明你显式切到了 `real` parser，但当前项目还没有真实解析实现。演示阶段请使用：
+说明你显式切到了 `real` parser，但没有配置可用的 `gcapp_cli`，也没有提供 fallback 输出目录。
+
+请先配置：
+
+```bash
+export DFM_CAD_PARSER=real
+export DFM_GCAPP_CLI=/absolute/path/to/gcapp_cli
+export DFM_GCAPP_SNAPSHOT_CLI=/absolute/path/to/gcapp_snapshot_cli
+```
+
+或者先回退到演示路径：
 
 ```bash
 python run.py sample --parser mock
+```
+
+如果你已经有一份 GCAPP 产物目录，也可以直接配置：
+
+```bash
+export DFM_GCAPP_OUTPUT_DIR=/absolute/path/to/gcapp_output
 ```
 
 ### 5. PPT 生成成功，但图片看起来是占位图

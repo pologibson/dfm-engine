@@ -1,127 +1,141 @@
 # GCAPP Parser Contract
 
-This document defines the handoff between the DFM engine and a future GCAPP
-command-line parser. The DFM engine will keep its current workflow and only
-swap the `real` CAD parser backend from a mock implementation to this adapter.
+This document defines the adapter boundary between `dfm-engine` and the GCAPP
+command-line tools. The Python workflow keeps the same `CADParser -> CADModel`
+contract; only the `real` parser backend changes.
 
 ## Goal
 
-Given a STEP file, GCAPP should generate:
+Given a STEP file, GCAPP should provide:
 
-- a normalized `model.json`
-- a `snapshots/` directory containing rendered views or extracted images
+- `gcapp_cli`: structure extraction into `model.json`
+- `gcapp_snapshot_cli`: rendered overview snapshot into `snapshots/overview.png`
 
-The Python side will read those artifacts, validate them, and translate them
-into the stable `CADModel` already used by tagging, planning, and PPT building.
+The Python side is responsible for:
+
+1. materializing the STEP input for the CLIs
+2. invoking both executables
+3. validating the generated artifacts
+4. mapping the result back into the stable `CADModel` used by the workflow
 
 ## Expected CLI Interface
 
-The adapter expects a CLI shaped like:
+### Structure CLI
 
 ```bash
-gcapp \
-  --input-step /path/to/input.step \
-  --output-model /path/to/output/model.json \
-  --output-snapshots /path/to/output/snapshots
+gcapp_cli \
+  --input /path/to/input.step \
+  --output-dir /path/to/output
 ```
 
-### Input
+Expected output:
 
-- `--input-step`
-  - Absolute or relative path to a `.step` or `.stp` file
+- `/path/to/output/model.json`
 
-### Output
+### Snapshot CLI
 
-- `--output-model`
-  - Path to a UTF-8 JSON file
-  - File must exist when GCAPP exits successfully
-- `--output-snapshots`
-  - Path to a directory created by GCAPP
-  - Snapshot files referenced from `model.json` must live under this directory
+```bash
+gcapp_snapshot_cli \
+  --input /path/to/input.step \
+  --output-dir /path/to/output
+```
+
+Expected output:
+
+- `/path/to/output/snapshots/overview.png`
+
+The two executables are intentionally separate so the dfm-engine adapter can
+keep structure parsing and snapshot generation loosely coupled.
 
 ## `model.json` Schema
 
-The Python adapter validates the artifact against the `ParsedModel` schema.
+`gcapp_cli` is expected to emit a lightweight assembly tree:
 
 ```json
 {
-  "source_file": "robot_cell.step",
-  "product_name": "Robot Cell",
-  "assembly_name": "Robot Cell Assembly",
-  "root_node_id": "ASSY-ROOT",
+  "root_node_id": "0:1",
   "nodes": [
     {
-      "node_id": "ASSY-ROOT",
-      "parent_node_id": null,
-      "part_no": "ASSY-001",
-      "part_name": "Main Assembly",
+      "id": "0:1",
+      "name": "ROOT",
       "level": 0,
-      "module_hint": "system",
-      "notes": "Top-level assembly",
-      "snapshot_ids": ["overview"],
-      "attributes": {
-        "native_name": "Main Assembly"
-      }
-    }
-  ],
-  "snapshots": [
+      "parent": null
+    },
     {
-      "snapshot_id": "overview",
-      "relative_path": "snapshots/overview.svg",
-      "label": "Overall assembly view",
-      "kind": "overview",
-      "node_id": "ASSY-ROOT"
+      "id": "0:1:1",
+      "name": "Main Assembly",
+      "level": 1,
+      "parent": "0:1"
+    },
+    {
+      "id": "123",
+      "name": "Base Frame",
+      "level": 2,
+      "parent": "0:1:1"
     }
-  ],
-  "metadata": {
-    "generator": "gcapp-cli",
-    "version": "0.1"
-  }
+  ]
 }
 ```
 
-## Node Expectations
+Minimum required fields:
 
-Each node must include:
+- top-level `root_node_id`
+- top-level `nodes`
+- for each node:
+  - `id`
+  - `name`
+  - `level`
+  - `parent`
 
-- `node_id`
-- `part_no`
-- `part_name`
-- `level`
+## Python-Side Normalization
 
-Optional but strongly recommended:
+The adapter accepts the lightweight CLI JSON and normalizes it into the richer
+internal `ParsedModel`/`CADModel` shape used by the current workflow.
 
-- `parent_node_id`
-- `module_hint`
-- `notes`
-- `snapshot_ids`
-- `attributes`
+Normalization rules:
 
-## Snapshot Expectations
+- `part_no` defaults to the GCAPP node `id`
+- `part_name` defaults to the GCAPP node `name`
+- `parent_part_no` is resolved from the node `parent`
+- `product_name` is derived from the root node or STEP filename
+- if `snapshots/overview.png` exists, it is attached as the `overview` asset
 
-Each snapshot must include:
+This keeps planner, tagging, PPT generation, API, and CLI entrypoints unchanged.
 
-- `snapshot_id`
-- `relative_path`
-- `label`
+## Adapter Configuration
 
-Optional:
+The `FutureRealCADParser` supports these environment variables:
 
-- `kind`
-- `node_id`
+- `DFM_GCAPP_CLI`
+  - Absolute path or command name for `gcapp_cli`
+- `DFM_GCAPP_SNAPSHOT_CLI`
+  - Absolute path or command name for `gcapp_snapshot_cli`
+- `DFM_GCAPP_WORK_DIR`
+  - Optional persistent directory where dfm-engine stores generated GCAPP runs
+- `DFM_GCAPP_OUTPUT_DIR`
+  - Optional fallback directory containing pre-generated `model.json` and snapshots
 
-The adapter resolves `relative_path` from the GCAPP output directory and fails
-fast if the referenced file is missing.
+## Fallback Behavior
 
-## Adapter Behavior
+The adapter uses this order:
 
-The DFM engine's `FutureRealCADParser`:
+1. If `DFM_GCAPP_OUTPUT_DIR` is set:
+   - do not call the CLI tools
+   - read the pre-generated artifacts directly
+2. Else:
+   - call `gcapp_cli`
+   - call `gcapp_snapshot_cli` if it is available
+3. If `gcapp_snapshot_cli` is unavailable:
+   - continue parsing structure
+   - return a `CADModel` without snapshot assets
+4. If `gcapp_cli` is unavailable and no fallback output directory is configured:
+   - fail fast with a clear runtime error
 
-1. receives the STEP filename from the existing workflow
-2. locates GCAPP output artifacts
-3. validates `model.json` against `ParsedModel`
-4. validates referenced snapshot files exist
-5. adapts nodes into the stable `CADModel.parts` list
+## Non-Goals
 
-This is intentionally an adapter boundary only. No Python STEP geometry parsing
-or GCAPP UI integration is part of this contract.
+This contract does not include:
+
+- GCAPP UI automation
+- Qt window interaction
+- Python STEP bindings
+- geometry parsing inside `dfm-engine`
