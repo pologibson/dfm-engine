@@ -57,6 +57,26 @@ class CADModel(BaseModel):
     product_name: str
     assembly_name: str
     parts: List[CADPart] = Field(default_factory=list)
+    snapshot_assets: Dict[str, str] = Field(default_factory=dict)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+
+class GCAPPNodePayload(BaseModel):
+    id: Optional[str] = None
+    node_id: Optional[str] = None
+    name: Optional[str] = None
+    part_name: Optional[str] = None
+    level: int = 0
+    parent: Optional[str] = None
+    parent_node_id: Optional[str] = None
+    part_no: Optional[str] = None
+    module_hint: Optional[str] = None
+    notes: str = ""
+
+
+class GCAPPModelPayload(BaseModel):
+    root_node_id: str
+    nodes: List[GCAPPNodePayload] = Field(default_factory=list)
 
 
 class ParsedSnapshot(BaseModel):
