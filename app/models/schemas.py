@@ -59,12 +59,45 @@ class CADModel(BaseModel):
     parts: List[CADPart] = Field(default_factory=list)
 
 
+class ParsedSnapshot(BaseModel):
+    snapshot_id: str
+    relative_path: str
+    label: str
+    kind: str = "general"
+    node_id: Optional[str] = None
+
+
+class ParsedNode(BaseModel):
+    node_id: str
+    parent_node_id: Optional[str] = None
+    part_no: str
+    part_name: str
+    level: int = 0
+    module_hint: Optional[str] = None
+    notes: str = ""
+    snapshot_ids: List[str] = Field(default_factory=list)
+    attributes: Dict[str, Any] = Field(default_factory=dict)
+
+
+class ParsedModel(BaseModel):
+    source_file: str
+    product_name: str
+    assembly_name: str
+    root_node_id: str
+    nodes: List[ParsedNode] = Field(default_factory=list)
+    snapshots: List[ParsedSnapshot] = Field(default_factory=list)
+    metadata: Dict[str, Any] = Field(default_factory=dict)
+
+
 class CADParserContract(BaseModel):
     parser_name: str
     accepted_input: List[str] = Field(default_factory=list)
     output_model: str = "CADModel"
+    intermediate_model: str = ""
     required_output_fields: List[str] = Field(default_factory=list)
     required_part_fields: List[str] = Field(default_factory=list)
+    required_intermediate_fields: List[str] = Field(default_factory=list)
+    external_artifacts: List[str] = Field(default_factory=list)
     notes: str = ""
 
 

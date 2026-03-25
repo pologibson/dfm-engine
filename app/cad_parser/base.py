@@ -20,14 +20,30 @@ class CADParser(ABC):
     - `CADModel.parts` must contain normalized `CADPart` entries
     - Each part must provide `part_no`, `part_name`, `level`, `parent_part_no`,
       `module_hint` and `notes`
+
+    Real-parser boundary:
+    - A production adapter may call an external CLI such as GCAPP
+    - The external tool may first emit a richer intermediate `ParsedModel`
+    - The adapter is responsible for validating that intermediate payload and
+      translating it back into the stable `CADModel` used by the workflow
     """
 
     contract = CADParserContract(
         parser_name="base",
         accepted_input=["step_filename", "step_bytes"],
         output_model="CADModel",
+        intermediate_model="ParsedModel",
         required_output_fields=["source_file", "product_name", "assembly_name", "parts"],
         required_part_fields=["part_no", "part_name", "level", "parent_part_no", "module_hint", "notes"],
+        required_intermediate_fields=[
+            "source_file",
+            "product_name",
+            "assembly_name",
+            "root_node_id",
+            "nodes",
+            "snapshots",
+        ],
+        external_artifacts=["model.json", "snapshots/"],
         notes="Return a normalized CADModel regardless of parser backend.",
     )
 

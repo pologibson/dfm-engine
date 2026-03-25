@@ -1,0 +1,103 @@
+{
+  "source_file": "robot_cell.step",
+  "product_name": "GCAPP Demo Cell",
+  "assembly_name": "GCAPP Demo Cell Assembly",
+  "root_node_id": "ASSY-ROOT",
+  "nodes": [
+    {
+      "node_id": "ASSY-ROOT",
+      "parent_node_id": null,
+      "part_no": "ASSY-001",
+      "part_name": "Main Assembly",
+      "level": 0,
+      "module_hint": "system",
+      "notes": "Top-level assembly extracted from GCAPP sample output.",
+      "snapshot_ids": [
+        "overview"
+      ],
+      "attributes": {
+        "native_name": "Main Assembly"
+      }
+    },
+    {
+      "node_id": "FRAME-ROOT",
+      "parent_node_id": "ASSY-ROOT",
+      "part_no": "FRAME-001",
+      "part_name": "Base Frame",
+      "level": 1,
+      "module_hint": "structure",
+      "notes": "Primary weldment and datum structure.",
+      "snapshot_ids": [
+        "module_frame"
+      ],
+      "attributes": {
+        "material_group": "steel"
+      }
+    },
+    {
+      "node_id": "MOTION-AXIS",
+      "parent_node_id": "ASSY-ROOT",
+      "part_no": "MOTION-001",
+      "part_name": "Gantry Axis",
+      "level": 1,
+      "module_hint": "motion",
+      "notes": "Linear axis carrying servo, rails, and transmission.",
+      "snapshot_ids": [
+        "module_motion"
+      ],
+      "attributes": {
+        "motion_type": "linear"
+      }
+    },
+    {
+      "node_id": "CTRL-CAB",
+      "parent_node_id": "ASSY-ROOT",
+      "part_no": "CTRL-001",
+      "part_name": "Control Cabinet",
+      "level": 1,
+      "module_hint": "control",
+      "notes": "Power, PLC, and IO cabinet.",
+      "snapshot_ids": [
+        "software_overview"
+      ],
+      "attributes": {
+        "discipline": "electrical"
+      }
+    }
+  ],
+  "snapshots": [
+    {
+      "snapshot_id": "overview",
+      "relative_path": "snapshots/overview.svg",
+      "label": "Overall assembly view",
+      "kind": "overview",
+      "node_id": "ASSY-ROOT"
+    },
+    {
+      "snapshot_id": "module_frame",
+      "relative_path": "snapshots/module_frame.svg",
+      "label": "Frame module view",
+      "kind": "module",
+      "node_id": "FRAME-ROOT"
+    },
+    {
+      "snapshot_id": "module_motion",
+      "relative_path": "snapshots/module_motion.svg",
+      "label": "Motion module view",
+      "kind": "module",
+      "node_id": "MOTION-AXIS"
+    },
+    {
+      "snapshot_id": "software_overview",
+      "relative_path": "snapshots/software_overview.svg",
+      "label": "Control architecture view",
+      "kind": "software_architecture",
+      "node_id": "CTRL-CAB"
+    }
+  ],
+  "metadata": {
+    "generator": "gcapp-cli sample",
+    "version": "0.1",
+    "note": "Static sample used to test the GCAPP adapter contract."
+  }
+}
